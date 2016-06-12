@@ -1,0 +1,54 @@
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var mapUser = {};
+var mapSocket = {};
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', function(socket){
+/*mapUser[socket.id] = "";
+	mapSocket[socket.id] = socket;*/
+//  console.log('a user connected');
+  socket.on('disconnect', function(){
+	//io.emit('chat message', mapUser[socket.id] + " has left");
+	/*if(socket.id in mapUser)
+	delete 	mapUser[socket.id];
+	if(socket.id in mapSocket)
+	delete 	mapSocket[socket.id];*/
+delete 	mapUser[socket.id];
+delete 	mapSocket[socket.id];
+	    console.log(socket.id+ ' user disconnected,length '+Object.keys(mapUser).length);
+  });
+socket.on('init',function(msg){
+
+	mapUser[socket.id] = msg;
+	mapSocket[socket.id] = socket;
+console.log(Object.keys(mapUser).length +" is connected with id "+socket.id+ " msg " +mapUser[socket.id] );
+	socket.emit('chat message', "hi there, initialization done, "+Object.keys(mapUser).length +" is available for communication");
+//	socket.emit('chat message', "Your ID is "+msg);
+	socket.emit('news', "{data:'Your ID is "+msg+"'}");
+});
+
+socket.on('chat message', function(msg){
+    console.log(socket.id + ' message: ' + msg);
+	for (var key in mapUser) { 
+		if(key!==socket.id){
+			console.log(key+"______"+ socket.id);
+		socket.emit('chat message','sending to '+mapUser[key]);
+		mapSocket[key].emit('chat message', "message from "+mapUser[socket.id]+ " msg "+msg);
+}
+//		mapSocket[key].emit('chat message', msg);	
+	}
+//io.emit('chat message', msg);	
+  });
+socket.on('broadcast message', function(msg){
+	console.log(socket.id + ' broadcast message: ' + msg);	
+	io.emit('chat message', msg);	
+  });
+});
+
+http.listen(3001, function(){
+  console.log('listening on *:3001');
+});

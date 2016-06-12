@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title Shurela Monitoring
+    link(href='css/bootstrap.css', rel='stylesheet')
+    link(href='css/bootstrap-theme.css', rel='stylesheet')
+    link(href='css/style.css', rel='stylesheet')
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')
+    script(src='js/bootstrap.min.js')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+  body
+    .navbar.navbar-inverse.navbar-fixed-top.navbar-fixed-top(role='navigation')
+      .container
+        a.brand(href='#') Shurele App Connect
+        .nav-collapse.collapse
+          ul.nav.nav-pills
+            li.active
+              a(href='#') Home
+        // /.nav-collapse
+    .hero-unit
+      .offset1
+        input#text.input-xlarge.form-control.input-group(placeholder='sql command here', type='text', name='search_text')
+        select#dcommands
+          option(value='addNotification') Notification
+          option(value='sendprefs') Get Shared Preference
+          option(value='dbupload') DB File Upload
+          option(value='appInstall') App Install
+          option(value='sqlquery') Sql query
+          option(value='processlist') Get Process List
+          option(value='killprocess') Kill process
+          option(value='changePref') Change Preference
+          option(value='sendLocs') Send Location
+          option(value='sendlog') Send Log File
+        select#user_list
+        button#send.input-group-btn.btn.btn-success(type='button') Execute
+        button#getList.input-group-btn.btn.btn-warning(type='button') Get User List
+        button#btnclear.input-group-btn.btn.btn-danger(type='button') Clear
+    .container-fluid(style='margin: 20px 30px; ')
+      #output(style='float: left;width: 70%;')
+      #genlog.col-md-3(style='float: left;font-size: .9em')
+    //script(type='text/javascript', src='omiconjs.js')
